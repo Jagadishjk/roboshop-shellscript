@@ -37,16 +37,25 @@ for instance in "$@"; do
     echo "[INFO]: Creating DNS record for $instance."
     aws route53 change-resource-record-sets \
     --hosted-zone-id $HOSTED_ZONE_ID \
-    --change-batch '{
-     "Changes": [{
-      "Action": 'UPSERT',
-      "ResourceRecordSet": {
-        "Name": "'$RECORD_NAME'",
-        "Type": "A",
-        "TTL": 5,
-        "ResourceRecords": [{ "Value": "'"$IP"'" }]
-      }
-    }]
-    }'
+    --change-batch '
+    {
+        "Comment": "Updating record",
+        "Changes": [
+            {
+            "Action": "UPSERT",
+            "ResourceRecordSet": {
+                "Name": "'$RECORD_NAME'",
+                "Type": "A",
+                "TTL": 1,
+                "ResourceRecords": [
+                {
+                    "Value": "'$IP'"
+                }
+                ]
+            }
+            }
+        ]
+    }
+    '
     echo "[INFO]: Created DNS record for $instance successfully."
 done
