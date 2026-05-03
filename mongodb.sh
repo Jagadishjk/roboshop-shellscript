@@ -21,7 +21,7 @@ VALIDATE() {
         echo -e "$2 .... $R FAILURE $N" | tee -a $LOGS_FILE
         exit 1
     else
-        echo -e "$2 .... ${G} SUCESS ${N}" | tee -a $LOGS_FILE
+        echo -e "$2 .... ${G} SUCCESS ${N}" | tee -a $LOGS_FILE
     fi
 }
 
@@ -42,3 +42,5 @@ VALIDATE $? "Allowing remote connections."
 
 systemctl restart mongod
 VALIDATE $? "Restarting mongobd"
+
+echo -e "Mongodb configured ... $G SUCCESS $N"s
