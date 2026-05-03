@@ -43,7 +43,7 @@ else
     echo -e "roboshop user already exist ... $Y SKIPPING $N"
 fi
 
-mkdir /app
+mkdir -p /app
 rm -rf /app/*
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOGS_FILE
 cd /app 
