@@ -73,5 +73,13 @@ VALIDATE $? "Copying Mongo.repo file"
 dnf install mongodb-mongosh -y &>>$LOGS_FILE
 VALIDATE $? "Installing Mongodb"
 
-mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOGS_FILE
-VALIDATE $? "Connecting to Mongodb host"
+INDEX=$(mongosh --host $MONGODB_HOST --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')") &>>$LOGS_FILE
+if [ "$INDEX" -ne 0 ]; then
+    mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOGS_FILE
+    VALIDATE $? "Loading products"
+else
+    echo "Products already loaded"
+fi
+
+systemctl restart catalogue
+VALIDATE $? "Restarted Catalogue service"
