@@ -73,5 +73,5 @@ VALIDATE $? "Copying Mongo.repo file"
 dnf install mongodb-mongosh -y &>>$LOGS_FILE
 VALIDATE $? "Installing Mongodb"
 
-mongosh --host $MONGODB_HOST </app/db/master-data.js
+mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOGS_FILE
 VALIDATE $? "Connecting to Mongodb host"
