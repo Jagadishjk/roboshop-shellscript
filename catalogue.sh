@@ -17,7 +17,7 @@ if [ $USERID -ne 0 ]; then
     echo -e "${R}You should run this script as root user or with sudo privileges.${N}"
     exit 1
 fi
-echo "$R DEBUG: $R $0 $N"
+echo -e "$R DEBUG: $R $0 $N"
 VALIDATE() {
     if [ $1 -ne 0 ]; then
         echo -e "$2 .... $R FAILURE $N" | tee -a $LOGS_FILE
