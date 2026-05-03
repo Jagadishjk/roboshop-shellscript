@@ -3,6 +3,7 @@ USERID=$(id -u)
 LOGS_FOLDER="/var/log/shellscript"
 LOGS_FILE="/var/log/shellscript/$0.log"
 SCRIPT_DIR=$(pwd)
+MONGODB_HOST="mongodb.techlineruns.online"
 
 mkdir -p "$LOGS_FOLDER"
 
@@ -44,17 +45,33 @@ else
 fi
 
 mkdir -p /app
+VALIDATE $? "Creating /app directory"
+
 rm -rf /app/*
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOGS_FILE
-cd /app 
+VALIDATE $? "Copying catalogue.zip code"
 
+cd /app 
 unzip /tmp/catalogue.zip
+VALIDATE $? "Unzipping catalogue.zip code"
 
 cd /app 
 npm install &>>$LOGS_FILE
+VALIDATE $? "Installing Nodejs dependencies"
 
 cp -r $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
+VALIDATE $? "Copying catalogue.service file"
 
 systemctl daemon-reload
 systemctl enable catalogue 
 systemctl start catalogue
+VALIDATE $? "Enabling and starting catalogue service"
+
+cp -r $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
+VALIDATE $? "Copying Mongo.repo file"
+
+dnf install mongodb-mongosh -y &>>$LOGS_FILE
+VALIDATE $? "Installing Mongodb"
+
+mongosh --host $MONGODB_HOST </app/db/master-data.js
+VALIDATE $? "Connecting to Mongodb host"
