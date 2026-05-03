@@ -74,7 +74,7 @@ dnf install mongodb-mongosh -y &>>$LOGS_FILE
 VALIDATE $? "Installing Mongodb"
 
 INDEX=$(mongosh --host $MONGODB_HOST --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')") &>>$LOGS_FILE
-if [ "$INDEX" -ne 0 ]; then
+if [ "$INDEX" -le 0 ]; then
     mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOGS_FILE
     VALIDATE $? "Loading products"
 else
