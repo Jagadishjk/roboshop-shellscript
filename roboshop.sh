@@ -16,8 +16,9 @@ for instance in "$@"; do
     --query 'Instances[0].InstanceId' \
     --output text)
 
+    sleep 5
     echo "[INFO]: Created $instance instance successfully."
-        if [ $instance == "frontend" ]; then
+        if [ "$instance" == "frontend" ]; then
             echo "[INFO]: Fetching Public IP for $instance."
             IP=$(aws ec2 describe-instances \
             --instance-ids $INSATNCE_ID \
